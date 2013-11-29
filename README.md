@@ -10,6 +10,8 @@ The patchset was original downloaded from github.com/beagleboard/kernel
 The patch.sh was edited and a 3.8.13-rt16 patch from https://www.kernel.org/pub/linux/kernel/projects/rt/
 is used during the patching.
 
+Stephan Klann, University of Southern Denmark, stkla10@student.sdu.dk
+
 usage
 ======
 

@@ -41,7 +41,7 @@ and am335x-boneblack.dtb to /boot
 Change uEnv.txt on the BEAGLE_BONE partition
 
 ```
-devtree=/boot/am335x-bone.dtb
+devtree=/boot/am335x-boneblack.dtb
 dtboot=run mmcargs; ext2load mmc ${mmcdev}:2 ${kloadaddr} ${bootfile} ; ext2load mmc ${mmcdev}:2 ${fdtaddr} ${devtree} ; bootm ${kloadaddr} - ${fdtaddr}
 uenvcmd=run dtboot
 optargs=consoleblank=0

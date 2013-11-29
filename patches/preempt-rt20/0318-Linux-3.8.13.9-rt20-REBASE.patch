@@ -1,0 +1,19 @@
+From 2c733fc6164f8721f496c21561deaa04f13b5988 Mon Sep 17 00:00:00 2001
+From: "Steven Rostedt (Red Hat)" <rostedt@goodmis.org>
+Date: Wed, 11 Sep 2013 19:44:46 -0400
+Subject: [PATCH 318/318] Linux 3.8.13.9-rt20 REBASE
+
+---
+ localversion-rt | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/localversion-rt b/localversion-rt
+index 08b3e75..e095ab8 100644
+--- a/localversion-rt
++++ b/localversion-rt
+@@ -1 +1 @@
+--rt14
++-rt20
+-- 
+1.8.4.rc3
+

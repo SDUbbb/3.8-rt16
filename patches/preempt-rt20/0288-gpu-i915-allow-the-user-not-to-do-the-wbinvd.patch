@@ -1,0 +1,34 @@
+From 03383372e6c90dd5f81db21ca7b8edb1cbddcf29 Mon Sep 17 00:00:00 2001
+From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Date: Fri, 21 Jun 2013 11:38:28 +0200
+Subject: [PATCH 288/318] gpu: i915: allow the user not to do the wbinvd
+
+The wbinvd() renders the system with i915 unusable on RT. Using this
+expensive instruction avoids GPU trouble according to
+   https://bugs.freedesktop.org/show_bug.cgi?id=62191
+
+As a workaround for RT it is recommended to pin each GPU related process
+to the same CPU and then disable this instruction via the module
+paramter.
+
+Cc: stable-rt@vger.kernel.org
+Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+---
+ drivers/gpu/drm/i915/i915_gem.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/drivers/gpu/drm/i915/i915_gem.c b/drivers/gpu/drm/i915/i915_gem.c
+index 710c1b7..ed35906 100644
+--- a/drivers/gpu/drm/i915/i915_gem.c
++++ b/drivers/gpu/drm/i915/i915_gem.c
+@@ -35,6 +35,7 @@
+ #include <linux/swap.h>
+ #include <linux/pci.h>
+ #include <linux/dma-buf.h>
++#include <linux/module.h>
+ 
+ static void i915_gem_object_flush_gtt_write_domain(struct drm_i915_gem_object *obj);
+ static void i915_gem_object_flush_cpu_write_domain(struct drm_i915_gem_object *obj);
+-- 
+1.8.4.rc3
+

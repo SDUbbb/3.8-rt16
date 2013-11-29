@@ -1,0 +1,36 @@
+From 9c6ba5d88d98efdd8a223dddda456f5dac326985 Mon Sep 17 00:00:00 2001
+From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Date: Tue, 13 Aug 2013 16:08:31 -0400
+Subject: [PATCH 035/318] net/cpsw: fix missplaced init chunk
+
+this is a fixup for "net/cpsw: fix irq_disable() with threaded interrupts"
+where the assignment made into the slave and not into the main device.
+
+Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+---
+ drivers/net/ethernet/ti/cpsw.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/net/ethernet/ti/cpsw.c b/drivers/net/ethernet/ti/cpsw.c
+index f0d8fdf..3c97c21 100644
+--- a/drivers/net/ethernet/ti/cpsw.c
++++ b/drivers/net/ethernet/ti/cpsw.c
+@@ -1633,7 +1633,6 @@ static int cpsw_probe_dual_emac(struct platform_device *pdev,
+ 		priv_sl2->irqs_table[i] = priv->irqs_table[i];
+ 		priv_sl2->num_irqs = priv->num_irqs;
+ 	}
+-	priv->irq_enabled = true;
+ 	ndev->features |= NETIF_F_HW_VLAN_FILTER;
+ 
+ 	ndev->netdev_ops = &cpsw_netdev_ops;
+@@ -1872,6 +1871,7 @@ static int cpsw_probe(struct platform_device *pdev)
+ 		k++;
+ 	}
+ 
++	priv->irq_enabled = true;
+ 	ndev->features |= NETIF_F_HW_VLAN_FILTER;
+ 
+ 	ndev->netdev_ops = &cpsw_netdev_ops;
+-- 
+1.8.4.rc3
+

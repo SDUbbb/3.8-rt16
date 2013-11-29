@@ -1,0 +1,36 @@
+From 3dacaa467051032515c0b9b88aaf69937b5d34f6 Mon Sep 17 00:00:00 2001
+From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Date: Tue, 13 Aug 2013 16:08:31 -0400
+Subject: [PATCH 034/318] net/cpsw: revert
+ 80d5c3689b886308247da295a228a54df49a44f6
+
+Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+---
+ drivers/net/ethernet/ti/cpsw.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/net/ethernet/ti/cpsw.c b/drivers/net/ethernet/ti/cpsw.c
+index d289638..f0d8fdf 100644
+--- a/drivers/net/ethernet/ti/cpsw.c
++++ b/drivers/net/ethernet/ti/cpsw.c
+@@ -1286,7 +1286,7 @@ clean_vid:
+ }
+ 
+ static int cpsw_ndo_vlan_rx_add_vid(struct net_device *ndev,
+-				    __be16 proto, u16 vid)
++		unsigned short vid)
+ {
+ 	struct cpsw_priv *priv = netdev_priv(ndev);
+ 
+@@ -1298,7 +1298,7 @@ static int cpsw_ndo_vlan_rx_add_vid(struct net_device *ndev,
+ }
+ 
+ static int cpsw_ndo_vlan_rx_kill_vid(struct net_device *ndev,
+-				     __be16 proto, u16 vid)
++		unsigned short vid)
+ {
+ 	struct cpsw_priv *priv = netdev_priv(ndev);
+ 	int ret;
+-- 
+1.8.4.rc3
+

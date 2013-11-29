@@ -1,0 +1,35 @@
+From 250a6e8507777b8ae28e1832ad9bbcd2e70dc8a5 Mon Sep 17 00:00:00 2001
+From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Date: Fri, 7 Jun 2013 16:03:56 +0200
+Subject: [PATCH 285/313] kernel/workqueue: Add PF_THREAD_BOUND after set_cpu
+
+This is just a precaution for now. There are reports that the flag is
+getting lost. I could only notice this on workqueues due to another bug.
+So this should WARN_ON should no trigger. If it does, investigations may
+begin.
+
+Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+---
+ kernel/workqueue.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
+
+diff --git a/kernel/workqueue.c b/kernel/workqueue.c
+index 8817480..99855b3 100644
+--- a/kernel/workqueue.c
++++ b/kernel/workqueue.c
+@@ -1638,8 +1638,11 @@ __acquires(&gcwq->lock)
+ 		 * it races with cpu hotunplug operation.  Verify
+ 		 * against GCWQ_DISASSOCIATED.
+ 		 */
+-		if (!(gcwq->flags & GCWQ_DISASSOCIATED))
++		if (!(gcwq->flags & GCWQ_DISASSOCIATED)) {
+ 			set_cpus_allowed_ptr(task, get_cpu_mask(gcwq->cpu));
++			if (WARN_ON(!(task->flags & PF_THREAD_BOUND)))
++				task->flags |= PF_THREAD_BOUND;
++		}
+ 
+ 		spin_lock_irq(&gcwq->lock);
+ 		if (gcwq->flags & GCWQ_DISASSOCIATED)
+-- 
+1.7.9.5
+

@@ -1,0 +1,38 @@
+From 6ef24e68417297f0ff70d46f0bdd02b85706c8f6 Mon Sep 17 00:00:00 2001
+From: Thomas Gleixner <tglx@linutronix.de>
+Date: Sun, 17 Jul 2011 19:53:19 +0200
+Subject: [PATCH 147/318] stomp-machine-mark-stomper-thread.patch
+
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+---
+ include/linux/sched.h | 1 +
+ kernel/stop_machine.c | 1 +
+ 2 files changed, 2 insertions(+)
+
+diff --git a/include/linux/sched.h b/include/linux/sched.h
+index b856a14..ba9a22d 100644
+--- a/include/linux/sched.h
++++ b/include/linux/sched.h
+@@ -1873,6 +1873,7 @@ extern void thread_group_cputime_adjusted(struct task_struct *p, cputime_t *ut,
+ #define PF_MEMPOLICY	0x10000000	/* Non-default NUMA mempolicy */
+ #define PF_MUTEX_TESTER	0x20000000	/* Thread belongs to the rt mutex tester */
+ #define PF_FREEZER_SKIP	0x40000000	/* Freezer should not count it as freezable */
++#define PF_STOMPER	0x80000000	/* I am a stomp machine thread */
+ 
+ /*
+  * Only the _current_ task can read/write to tsk->flags, but other
+diff --git a/kernel/stop_machine.c b/kernel/stop_machine.c
+index 61779f8..484a335 100644
+--- a/kernel/stop_machine.c
++++ b/kernel/stop_machine.c
+@@ -327,6 +327,7 @@ static int __cpuinit cpu_stop_cpu_callback(struct notifier_block *nfb,
+ 		if (IS_ERR(p))
+ 			return notifier_from_errno(PTR_ERR(p));
+ 		get_task_struct(p);
++		p->flags |= PF_STOMPER;
+ 		kthread_bind(p, cpu);
+ 		sched_set_stop_task(cpu, p);
+ 		stopper->thread = p;
+-- 
+1.8.4.rc3
+
